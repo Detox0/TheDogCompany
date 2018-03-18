@@ -11,6 +11,58 @@ from rest_framework.parsers import JSONParser
 def index(request):
     return HttpResponse('<h1>¡Bienvenido! (por ahora) la pagina funciona.')
 
+###### FUNCIONES QUE LEEN DATOS #######
+
+#Funcion que entrega a todas las personas registradas en la BD
+def personas_todas(request):
+
+    if (request.method == 'GET'):
+
+        # Se consulta por todas las personas y se les pasan a serializer
+        personas = Persona.objects.all()
+        serializer = PersonaSerializer(personas,many=True)
+
+        # Se retornan todos los objetos encontrados con formato JSON
+        return JsonResponse(serializer.data, safe=False)
+
+
+# Funcion que entrega a todos los autos registradas en la BD
+def autos_todos(request):
+
+   if (request.method == 'GET'):
+
+        # Se consulta por todos los autos y se les pasan a serializer
+        autos = Auto.objects.all()
+        serializer = AutoSerializer(autos, many=True)
+
+        # Se retornan todos los objetos encontrados con formato JSON
+        return JsonResponse(serializer.data, safe=False)
+
+# Funcion que entrega a todas las personas registradas en la BD
+def carnet_todos(request):
+
+    if (request.method == 'GET'):
+        # Se consulta por todas las personas y se les pasan a serializer
+        carnet = Carnet.objects.all()
+        serializer = CarnetSerializer(carnet, many=True)
+
+        # Se retornan todos los objetos encontrados con formato JSON
+        return JsonResponse(serializer.data, safe=False)
+
+
+# Funcion que entrega los autos asociados a una persona
+def autos_persona(request,pk):
+
+    if(request.method == 'GET'):
+
+        # Buscamos los autos que posee una persona en especifico (con el id)
+        autos = Auto.objects.filter(persona__id=pk)
+        serializer = AutoSerializer(autos,many=True)
+
+        return JsonResponse(serializer.data, safe=False)
+
+###### FUNCIONES QUE CREAN DATOS #######
+
 # Funcion para crear una persona
 @csrf_exempt
 def crear_persona(request):
@@ -74,3 +126,19 @@ def crear_carnet(request):
 
         # En caso contrario 'Bad request'
         return JsonResponse(serializer.errors, status=400)
+
+
+
+###### FUNCIONES QUE BORRAN DATOS #######
+
+# Funcion que puede eliminar una persona registrada en la base de datos a traves de su ID
+def eliminar_persona(request,pk):
+
+    if (request.method == 'GET'):
+
+        persona = Persona.objects.get(pk=pk)
+
+        persona.delete()
+
+        return HttpResponse('<h2>OK</h2>')
+

@@ -6,7 +6,15 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index),
-    url(r'^crear/persona$',views.crear_persona),
-    url(r'^crear/auto$',views.crear_auto),
-    url(r'^crear/carnet',views.crear_carnet),
+    url(r'^personas/crear$',views.crear_persona),
+    url(r'^autos/crear$',views.crear_auto),
+    url(r'^carnet/crear$',views.crear_carnet),
+
+    url(r'^personas/todas$',views.personas_todas),
+    url(r'^autos/todos$',views.autos_todos),
+    url(r'^carnet/todos$',views.carnet_todos),
+
+    url(r'^personas/eliminar/(?P<pk>[0-9]+)$',views.eliminar_persona),
+    url(r'^autos/persona/(?P<pk>[0-9]+)$',views.autos_persona),
+
 ]
